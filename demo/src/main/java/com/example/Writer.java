@@ -22,7 +22,7 @@ public class Writer extends Thread
         String s;
         try {
             while (true) {
-                // System.out.print("> ");
+                System.out.print("> ");
                 s = con_br.readLine();
                 if (s != null)
                     sock_pw.println(s);

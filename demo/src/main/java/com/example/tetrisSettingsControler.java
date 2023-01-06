@@ -16,7 +16,7 @@ public class tetrisSettingsControler {
 
         if (solo == true) {
             game g = new game(null);
-            gameControler gc = new gameControler(g, 120, 0, true, false);
+            gameControler gc = new gameControler(g, 120, 0, true, false,false,null);
             g.setControler(gc);
             Scene s = new Scene(g, 600, 450);
             App.changeScene(s);

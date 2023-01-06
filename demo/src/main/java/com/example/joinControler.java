@@ -3,33 +3,30 @@ package com.example;
 import java.io.IOException;
 
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
-public class hostJoinControler {
-    private hostJoinPanel laucher;
+public class joinControler {
+    private joinPanel laucher;
 
-    public hostJoinControler(hostJoinPanel h) {
+    public joinControler(joinPanel h) {
         this.laucher = h;
     }
 
-    public void playSettings(boolean host) {
+    public void play(KeyEvent ke) {
 
-        if (host) {
+        if (ke.getCode().equals(KeyCode.SPACE)) {
+            String str = laucher.adress.getText();
             try {
-                Server serv = new Server();
+                Client c = new Client(str);
                 // game g = new game(null);
-                // gameControler gc = new gameControler(g, 120, 0, true, false, true, serv);
+                // gameControler gc = new gameControler(g, 120, 0, true, false, true,c);
                 // g.setControler(gc);
                 // Scene s = new Scene(g, 600, 450);
                 // App.changeScene(s);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else {
-            joinPanel j = new joinPanel(null);
-            joinControler jc = new joinControler(j);
-            j.setControler(jc);
-            Scene s2 = new Scene(j, 600, 450);
-            App.changeScene(s2);
         }
     }
 

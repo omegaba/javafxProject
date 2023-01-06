@@ -38,7 +38,7 @@ public class hostJoinPanel extends GridPane{
         host.setTextFill(Color.valueOf("#ffc947"));
         host.setFont(new Font(23.0));
         host.setOnAction(event -> {
-            controler.playSettings(false);
+            controler.playSettings(true);
         });
         pane.getChildren().add(host);
 
@@ -54,7 +54,7 @@ public class hostJoinPanel extends GridPane{
         join.setTextFill(Color.valueOf("#ffc947"));
         join.setFont(new Font(23.0));
         join.setOnAction(event -> {
-            controler.playSettings(true);
+            controler.playSettings(false);
         });
         pane.getChildren().add(join);
 

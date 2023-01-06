@@ -1,10 +1,12 @@
 package com.example;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +34,10 @@ public class gameControler {
     private double timer;
     private double difficulte;
     private boolean isBlue;
+    private boolean isRed;
     private boolean playWwords;
+    private boolean multi;
+    private Object clientOrHost;
     private int caracterUtile;
     private int timerMinute;
     private int second;
@@ -43,11 +48,13 @@ public class gameControler {
     private StringBuilder sb = new StringBuilder();
     private ScheduledExecutorService executor = null;
 
-    public gameControler(game game, double time, double difficulte, boolean tetris, boolean playWw) {
+    public gameControler(game game, double time, double difficulte, boolean tetris, boolean playWw,boolean multi, Object clientOrHost) {
         this.game = game;
         this.tetris = tetris;
         this.difficulte = difficulte;
         playWwords = playWw;
+        this.multi = multi;
+        this.clientOrHost = clientOrHost;
         if(playWwords==true){
 
         }
@@ -61,6 +68,7 @@ public class gameControler {
             timer = 5 * Math.pow(0.9, difficulte);
         }
         this.isBlue = false;
+        this.isRed = false;
         this.caracterUtile = 0;
         this.timerMinute = 0;
         this.second = 0;
@@ -95,6 +103,18 @@ public class gameControler {
             reader.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void canRemoveLife() {
+        if (tetris) {
+            Random r = new Random();
+            int next = r.nextInt(5);
+            if (next == 2) {
+                game.firstWordText.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
+                game.firstWordText.setFill(Color.RED);
+                isRed = true;
+            }
         }
     }
 
@@ -169,6 +189,32 @@ public class gameControler {
         wordCounter++;
     }
 
+
+    public void printRedWord() {
+        if (tetris) {
+            if (isRed == true) {
+                isRed = false;
+                //ajout mot dans tampon enemie
+                if (clientOrHost instanceof Client) {
+                    // System.out.println("c");
+                    InputStream sysInBackup = System.in;
+                    ByteArrayInputStream in = new ByteArrayInputStream("c".getBytes());
+                    System.setIn(in);
+                    System.setIn(sysInBackup);
+                } else {
+                    // ((Server) clientOrHost).csock_pw.println("s");
+                    InputStream sysInBackup = System.in;
+                    ByteArrayInputStream in = new ByteArrayInputStream("s".getBytes());
+                    System.setIn(in);
+                    System.setIn(sysInBackup);
+                    // System.out.println("s");
+                }
+                game.firstWordText.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
+                game.firstWordText.setFill(Color.BLACK);
+            }
+        }
+    }
+
     public void printBlueWord() {
         if (tetris) {
             if (isBlue == true) {
@@ -238,6 +284,7 @@ public class gameControler {
             }
             game.pw.setFill(Color.GREEN);
             printBlueWord();
+            printRedWord();
         } else {
             game.pw.setFill(Color.RED);
 
@@ -254,6 +301,8 @@ public class gameControler {
         // bleu, qui donnera une vie en plus
         if (tetris) {
             canAddLife();
+            if(multi)
+                canRemoveLife();
             timer = Math.round((5 * Math.pow(0.9, difficulte)) * 100.0) / 100.0;
         }
 
