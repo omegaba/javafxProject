@@ -10,12 +10,13 @@ public class Client {
     public static BufferedReader con_br = new BufferedReader(new InputStreamReader(System.in));
     BufferedReader sock_br;
     PrintWriter sock_pw;
+    Socket sock;
     public gameControler gameCtrl;
 
     public Client(String adr) throws IOException, InterruptedException, ExecutionException {
         System.out.print("Enter server address: ");
         String address = adr;
-        Socket sock = new Socket(address, port);
+        sock = new Socket(address, port);
 
         sock_br = new BufferedReader(new InputStreamReader(sock.getInputStream()));
         sock_pw = new PrintWriter(sock.getOutputStream(), true);
@@ -27,10 +28,7 @@ public class Client {
         Scene s = new Scene(g, 600, 450);
         App.changeScene(s);
 
-
-        Thread chat_client_reader = new Reader("chat_client_reader", sock_pw, sock_br,this);
+        Thread chat_client_reader = new Reader("chat_client_reader", sock_pw, sock_br, this);
         chat_client_reader.start();
-
     }
-
 }

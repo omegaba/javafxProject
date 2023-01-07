@@ -401,9 +401,29 @@ public class gameControler {
                         }
                     }
                 }
+            } else {
+                if (vie == 0) {
+                    printGameOver();
+                    // closeServer();
+                }
             }
         }
     };
+
+    public void closeServer() {
+        if (clientOrHost != null) {
+            try {
+                if (clientOrHost instanceof Client)
+                    ((Client) clientOrHost).sock.close();
+                else {
+                    ((Server) clientOrHost).csock.close();
+                    ((Server) clientOrHost).ssock.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public List<String> getTampon() {
         return tampon;

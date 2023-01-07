@@ -14,12 +14,14 @@ public class Server {
     public static BufferedReader con_br = new BufferedReader(new InputStreamReader(System.in));
     BufferedReader csock_br;
     PrintWriter csock_pw;
+    ServerSocket ssock;
+    Socket csock;
     public gameControler gameCtrl;
 
     public Server() throws IOException, InterruptedException, ExecutionException {
-        ServerSocket ssock = new ServerSocket(port);
+        ssock = new ServerSocket(port);
         System.out.println("server: Waiting for client to connect");
-        Socket csock = ssock.accept();
+        csock = ssock.accept();
         System.out.println("server: Connection established");
 
         csock_br = new BufferedReader(new InputStreamReader(csock.getInputStream()));
@@ -31,12 +33,7 @@ public class Server {
         Scene s = new Scene(g, 600, 450);
         App.changeScene(s);
 
-
         Thread chat_server_Reader = new Reader("chat_server_writer", csock_pw, csock_br, this);
         chat_server_Reader.start();
-
     }
-
-
-
 }
