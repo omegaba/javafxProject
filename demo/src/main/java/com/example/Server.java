@@ -28,7 +28,7 @@ public class Server {
         csock_pw = new PrintWriter(csock.getOutputStream(), true);
 
         game g = new game(null);
-        gameCtrl = new gameControler(g, 120, 0, true, false, true, this);
+        gameCtrl = new gameControler(g, 120, 0, true, false,0, true, this);
         g.setControler(gameCtrl);
         Scene s = new Scene(g, 600, 450);
         App.changeScene(s);

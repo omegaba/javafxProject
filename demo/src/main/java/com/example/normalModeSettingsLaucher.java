@@ -36,7 +36,7 @@ public class normalModeSettingsLaucher extends GridPane {
         playWwords.setTextFill(Color.valueOf("#ffc947"));
         playWwords.setFont(new Font(23.0));
         playWwords.setOnAction(event -> {
-            nmc.playSettings(false);
+            nmc.playSettings(true);
         });
         pane.getChildren().add(playWwords);
 
@@ -52,7 +52,7 @@ public class normalModeSettingsLaucher extends GridPane {
         playWtime.setTextFill(Color.valueOf("#ffc947"));
         playWtime.setFont(new Font(23.0));
         playWtime.setOnAction(event -> {
-            nmc.playSettings(true);
+            nmc.playSettings(false);
         });
         pane.getChildren().add(playWtime);
 
