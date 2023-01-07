@@ -8,9 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-/**
- * JavaFX App
- */
+
 public class App extends Application {
 
     private static  Scene scen;
@@ -19,13 +17,9 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         stg=stage;
-
         gameLauncher gl= new gameLauncher(null);
         gameLaucherController glc =new gameLaucherController(gl);
         gl.setControler(glc);
-        // game gl=new game(null);
-        // gameControler gc= new gameControler(gl, 0, 1, true, false);
-        // gl.setControler(gc);
         scen = new Scene(gl, 600, 450);
         stage.setScene(scen);
         stage.show();

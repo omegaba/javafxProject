@@ -43,7 +43,8 @@ public class gameControler {
     private StringBuilder sb = new StringBuilder();
     private ScheduledExecutorService executor = null;
 
-    public gameControler(game game, double time, double difficulte, boolean tetris, boolean playWw, int nbwords,boolean multi,Object clientOrHost) {
+    public gameControler(game game, double time, double difficulte, boolean tetris, boolean playWw, int nbwords,
+            boolean multi, Object clientOrHost) {
 
         this.game = game;
         this.tetris = tetris;
@@ -59,7 +60,7 @@ public class gameControler {
         }
         init();
         if (!tetris) {
-            timer = time;
+            timer = (int) time;
         } else {
             timer = 5 * Math.pow(0.9, difficulte);
         }
@@ -136,7 +137,6 @@ public class gameControler {
         App.changeScene(s);
     }
 
-
     /*
      * dans cette fonction, on va regarder dans un certain fichier;
      * si une game à été sauvegardé, elle est lancée;
@@ -144,7 +144,7 @@ public class gameControler {
      */
     public void playLastGameRecorded() {
 
-        ArrayList <String> datalist=new ArrayList<>();
+        ArrayList<String> datalist = new ArrayList<>();
         File f = new File("lastGame.txt");
         BufferedReader reader;
         try {
@@ -160,13 +160,13 @@ public class gameControler {
             e.printStackTrace();
         }
         game g = new game(null);
-        double t=Double.parseDouble(datalist.get(0));
-        double d=Double.parseDouble(datalist.get(1));
-        boolean tet=Boolean.valueOf(datalist.get(2));
-        boolean pww=Boolean.valueOf(datalist.get(3));
+        double t = Double.parseDouble(datalist.get(0));
+        double d = Double.parseDouble(datalist.get(1));
+        boolean tet = Boolean.valueOf(datalist.get(2));
+        boolean pww = Boolean.valueOf(datalist.get(3));
         int nb = Integer.parseInt(datalist.get(4));
         boolean mult = Boolean.valueOf(datalist.get(5));
-        gameControler gc = new gameControler(g, t, d, tet, pww, nb,mult,null);
+        gameControler gc = new gameControler(g, t, d, tet, pww, nb, mult, null);
         g.setControler(gc);
         Scene s = new Scene(g, 600, 450);
         App.changeScene(s);
@@ -190,8 +190,9 @@ public class gameControler {
         // Parametrage des données pour le fichier de sauvegarde de la dernière partie
         // jouée
 
-        lastgamesavingfile = String.valueOf(this.timer) + "\n" + String.valueOf(difficulte) + "\n" + String.valueOf(tetris) + "\n"
-                + String.valueOf(playWwords) + "\n" + String.valueOf(nbwords)+"\n"+String.valueOf(multi);
+        lastgamesavingfile = String.valueOf(this.timer) + "\n" + String.valueOf(difficulte) + "\n"
+                + String.valueOf(tetris) + "\n"
+                + String.valueOf(playWwords) + "\n" + String.valueOf(nbwords) + "\n" + String.valueOf(multi);
         try (FileWriter myObj = new FileWriter("lastGame.txt", false)) {
             myObj.write(lastgamesavingfile);
             myObj.close();
@@ -200,17 +201,19 @@ public class gameControler {
             e.printStackTrace();
         }
         if (playWwords) {
-            game.scd.setText("left");
+            game.scd.setText("Words left");
         } else {
-            game.scd.setText("seconds");
+            game.scd.setText("Seconds");
         }
 
         // TODO Auto-generated method stub
         this.game.play.setVisible(true);
         this.game.play.setDisable(false);
         if (!playWwords) {
-            String t = String.format("%.2f", timer);
-            this.game.nb1.setText(t);
+            if (tetris) {
+                String t = String.format("%.2f", timer);
+                this.game.nb1.setText(t);
+            }
         } else {
             this.game.nb1.setText(String.valueOf(nbwords));
         }
@@ -256,7 +259,6 @@ public class gameControler {
             }
         }
     }
-
 
     // affiche game Over dans le textfield
     public void printGameOver() {
@@ -380,7 +382,7 @@ public class gameControler {
 
             if (tetris == false) {
                 if (timer > -1) {
-                    game.nb1.setText(String.format("%.2f", timer));
+                    game.nb1.setText(String.valueOf((int)timer));
                     timer -= 1;
                 } else {
                     if (timer <= 0) {

@@ -1,7 +1,6 @@
 package com.example;
 
 import java.io.IOException;
-//import org.fxmisc.richtext.StyleClassedTextArea;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -37,12 +36,12 @@ public class game extends AnchorPane {
         this.gc = gameC;
         this.setPrefHeight(400.0);
         setPrefWidth(600.0);
-
+        setStyle("-fx-background-color: #87CEFA  ;");
         Circle c1 = new Circle();
         c1.setFill(Color.WHITE);
         c1.setLayoutX(195.0);
         c1.setLayoutY(94.0);
-        c1.setRadius(39.0);
+        c1.setRadius(50.0);
         c1.setStroke(Color.valueOf("#ffc947"));
         c1.setStrokeType(StrokeType.INSIDE);
         c1.setStrokeWidth(3.0);
@@ -56,12 +55,12 @@ public class game extends AnchorPane {
         nb1.setStrokeWidth(0.0);
         nb1.setTextAlignment(TextAlignment.CENTER);
         nb1.setWrappingWidth(42.64990234375);
-        nb1.setFont(new Font(21.0));
+        nb1.setFont(new Font(19.0));
         getChildren().add(nb1);
 
         scd = new Text("");
-        scd.setLayoutX(174.0);
-        scd.setLayoutY(112.0);
+        scd.setLayoutX(166.0);
+        scd.setLayoutY(113.0);
         scd.setStrokeType(StrokeType.OUTSIDE);
         scd.setStrokeWidth(0.0);
         scd.setFont(new Font(13.0));

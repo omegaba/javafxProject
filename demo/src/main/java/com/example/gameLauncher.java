@@ -1,7 +1,6 @@
 package com.example;
 import java.io.File;
 import java.io.IOException;
-
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -37,7 +36,7 @@ public class gameLauncher extends GridPane {
         displayWelcome.setTextAlignment(TextAlignment.CENTER);
         displayWelcome.setTextFill(Color.WHITE);  
         displayWelcome.setAlignment(Pos.CENTER);
-        displayWelcome.setLayoutX(166.6);
+        displayWelcome.setLayoutX(200.6);
         displayWelcome.setLayoutY(49.9);
         displayWelcome.prefHeight(57.0);
         displayWelcome.prefWidth(267.0);

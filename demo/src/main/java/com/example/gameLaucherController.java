@@ -25,13 +25,7 @@ public class gameLaucherController {
         t.setControler(tc);
         Scene s = new Scene(t, 600, 450);
         App.changeScene(s);
-        /*
-         * game g = new game(null);
-         * gameControler gc = new gameControler(g, 0, 1, true, false);
-         * g.setControler(gc);
-         * Scene s = new Scene(g, 600, 450);
-         * App.changeScene(s);
-         */
+
     }
 
     public void playNormal() {
@@ -43,7 +37,6 @@ public class gameLaucherController {
     }
 
     public void playLastGameRecorded() {
-
         ArrayList<String> datalist = new ArrayList<>();
         File f = new File("lastGame.txt");
         BufferedReader reader;
