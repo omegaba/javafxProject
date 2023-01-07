@@ -16,6 +16,9 @@ public class App extends Application {
     private static  Scene scen;
     private static  Stage stg;
 
+    /* (non-Javadoc)
+     * @see javafx.application.Application#start(javafx.stage.Stage)
+     */
     @Override
     public void start(Stage stage) throws IOException {
         stg=stage;

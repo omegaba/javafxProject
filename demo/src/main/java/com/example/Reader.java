@@ -12,16 +12,52 @@ public class Reader extends Thread
     Object clientOrServer;
     gameControler gameCtrl;
 
-    public Reader(String name, PrintWriter sock_pw, BufferedReader con_br, Object clientOrServer) {
-        super(name);
-        this.con_br = con_br;
-        this.sock_pw = sock_pw;
-        this.clientOrServer = clientOrServer;
+    public Reader(Builder builder) {
+        super(builder.name);
+        this.con_br = builder.con_br;
+        this.sock_pw = builder.sock_pw;
+        this.clientOrServer=builder.clientOrServer;
         if (clientOrServer instanceof Client)
-            this.gameCtrl = ((Client) clientOrServer).gameCtrl;
+            this.gameCtrl = ((Client) builder.clientOrServer).gameCtrl;
         else
-            this.gameCtrl = ((Server) clientOrServer).gameCtrl;
+            this.gameCtrl = ((Server) builder.clientOrServer).gameCtrl;
     }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private String name;
+        private PrintWriter sock_pw;
+        private BufferedReader con_br;
+        private Object clientOrServer;
+
+        public Reader build() {
+            return new Reader(this);
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder sock_pw(PrintWriter sock_pw) {
+            this.sock_pw = sock_pw;
+            return this;
+        }
+
+        public Builder con_br(BufferedReader con_br) {
+            this.con_br = con_br;
+            return this;
+        }
+
+        public Builder clientOrServer(Object clientOrServer) {
+            this.clientOrServer = clientOrServer;
+            return this;
+        }
+    }
+
 
     public void actionRedWord() {
         if (gameCtrl.getTampon().size() == 15) {
