@@ -44,7 +44,7 @@ public final class gameControler {
     private ScheduledExecutorService executor = null;
 
     /**
-     * @param builder
+     * @param builder va nous servir a instanciez notre classe et ses attributs
      */
     private gameControler(Builder builder) {
 
@@ -262,16 +262,23 @@ public final class gameControler {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
+
+
         if (playWwords) {
             game.getSecond().setText("Words left");
         } else {
             game.getSecond().setText("Seconds");
         }
 
-        // TODO Auto-generated method stub
+
         if (!multi) {
             this.game.getMenu().setVisible(true);
             this.game.getMenu().setDisable(false);
+        }
+        else{
+            this.game.getMenu().setVisible(false);
+            this.game.getMenu().setDisable(true);
         }
 
         if (!playWwords) {
