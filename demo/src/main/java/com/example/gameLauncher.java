@@ -87,7 +87,7 @@ public class gameLauncher extends GridPane {
         lastGame.setLayoutX(178.0);
         lastGame.setLayoutY(291.0);
         lastGame.setOnAction(event -> {
-            glc.playLastGameRecorded();
+            gameControler.playLastGameRecorded();;
         });
         pane.getChildren().add(lastGame);
 

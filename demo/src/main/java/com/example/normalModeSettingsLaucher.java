@@ -63,7 +63,7 @@ public class normalModeSettingsLaucher extends GridPane {
         play.setMnemonicParsing(false);
         play.setOnAction(event -> {
             try {
-                nmc.toMainMenu();
+                gameControler.toMainMenu();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

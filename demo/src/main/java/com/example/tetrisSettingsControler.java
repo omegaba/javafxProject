@@ -16,7 +16,7 @@ public class tetrisSettingsControler {
 
         if (solo == true) {
             game g = new game(null);
-            gameControler gc = gameControler.builder().game(g).timer(120).difficulte(0).tetris(true).playWwords(false)
+            gameControler gc = gameControler.builder().game(g).timer(120).difficulte(3).tetris(true).playWwords(false)
                     .nbwords(0).multi(false).clientOrHost(null).build();
 
             g.setControler(gc);
@@ -29,14 +29,5 @@ public class tetrisSettingsControler {
             Scene s2 = new Scene(hj, 600, 450);
             App.changeScene(s2);
         }
-    }
-
-    public void toMainMenu() throws IOException {
-        gameLaucherController glc = new gameLaucherController(null);
-        gameLauncher g = new gameLauncher(null);
-        g.setControler(glc);
-        glc.setGame(g);
-        Scene s = new Scene(g, 600, 450);
-        App.changeScene(s);
     }
 }

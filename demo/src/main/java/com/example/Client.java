@@ -6,12 +6,12 @@ import javafx.scene.Scene;
 import java.io.*;
 
 public class Client {
-    public static int port = 13000;
-    public static BufferedReader con_br = new BufferedReader(new InputStreamReader(System.in));
-    BufferedReader sock_br;
-    PrintWriter sock_pw;
-    Socket sock;
-    public gameControler gameCtrl;
+    private static int port = 13000;
+    private static BufferedReader con_br = new BufferedReader(new InputStreamReader(System.in));
+    private BufferedReader sock_br;
+    private PrintWriter sock_pw;
+    private Socket sock;
+    private gameControler gameCtrl;
 
     public Client(String adr) throws IOException, InterruptedException, ExecutionException {
         System.out.print("Enter server address: ");
@@ -33,5 +33,17 @@ public class Client {
         Thread chat_client_reader = Reader.builder().name("chat_client_reader").sock_pw(sock_pw).con_br(sock_br)
                 .clientOrServer(this).build();
         chat_client_reader.start();
+    }
+
+    public gameControler getControler(){
+        return gameCtrl;
+    }
+
+    public PrintWriter getSock_pw(){
+        return sock_pw;
+    }
+
+    public Socket getSock(){
+        return sock;
     }
 }

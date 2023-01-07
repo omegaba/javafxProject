@@ -13,27 +13,27 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 public class game extends AnchorPane {
-    public gameControler gc;
-    public Text nb1;
-    public Button play;
-    public Text pw;
-    public Text sp;
-    public TextField userWord;
-    public Text wordsPerMin;
-    public Text accuracy;
-    public Text firstWordText;
-    public Text vie;
-    public Text vieValue;
-    public Circle tetrisCircle;
-    public Text scd;
-    public Button lastgame;
+    private  gameControler gamecontroler;
+    private Text secondvalue;
+    private Button menu;
+    private Text userEntry;
+    private Text text;
+    private TextField userWord;
+    private Text wordsPerMin;
+    private Text accuracyvalue;
+    private Text firstWordText;
+    private Text vie;
+    private Text vieValue;
+    private Circle tetrisCircle;
+    private Text second;
+    private Button lastgame;
     public void setControler(gameControler g) {
-        this.gc = g;
+        this.gamecontroler = g;
     }
 
     public game(gameControler gameC) {
         // setStyle("-fx-background-color: #0a1931;");
-        this.gc = gameC;
+        this.gamecontroler = gameC;
         this.setPrefHeight(400.0);
         setPrefWidth(600.0);
         setStyle("-fx-background-color: #87CEFA  ;");
@@ -47,24 +47,23 @@ public class game extends AnchorPane {
         c1.setStrokeWidth(3.0);
         getChildren().add(c1);
 
-        nb1 = new Text();
-        nb1.setId("second");
-        nb1.setLayoutX(174.0);
-        nb1.setLayoutY(92.0);
-        nb1.setStrokeType(StrokeType.OUTSIDE);
-        nb1.setStrokeWidth(0.0);
-        nb1.setTextAlignment(TextAlignment.CENTER);
-        nb1.setWrappingWidth(42.64990234375);
-        nb1.setFont(new Font(19.0));
-        getChildren().add(nb1);
+        secondvalue = new Text();
+        secondvalue.setLayoutX(174.0);
+        secondvalue.setLayoutY(92.0);
+        secondvalue.setStrokeType(StrokeType.OUTSIDE);
+        secondvalue.setStrokeWidth(0.0);
+        secondvalue.setTextAlignment(TextAlignment.CENTER);
+        secondvalue.setWrappingWidth(42.64990234375);
+        secondvalue.setFont(new Font(19.0));
+        getChildren().add(secondvalue);
 
-        scd = new Text("");
-        scd.setLayoutX(166.0);
-        scd.setLayoutY(113.0);
-        scd.setStrokeType(StrokeType.OUTSIDE);
-        scd.setStrokeWidth(0.0);
-        scd.setFont(new Font(13.0));
-        getChildren().add(scd);
+        second = new Text("");
+        second.setLayoutX(166.0);
+        second.setLayoutY(113.0);
+        second.setStrokeType(StrokeType.OUTSIDE);
+        second.setStrokeWidth(0.0);
+        second.setFont(new Font(13.0));
+        getChildren().add(second);
 
         tetrisCircle = new Circle();
         tetrisCircle.setFill(Color.WHITE);
@@ -77,7 +76,6 @@ public class game extends AnchorPane {
         getChildren().add(tetrisCircle);
 
         vieValue = new Text();
-        vieValue.setId("vieValue");
         vieValue.setLayoutX(70);
         vieValue.setLayoutY(92.0);
         vieValue.setStrokeType(StrokeType.OUTSIDE);
@@ -95,26 +93,24 @@ public class game extends AnchorPane {
         vie.setFont(new Font(13.0));
         getChildren().add(vie);
 
-        Text wpm = new Text("Vitesse");
+        Text vitesse = new Text("Speed");
         // wpm.setFill(Color.WHITE);
-        wpm.setLayoutX(272.0);
-        wpm.setLayoutY(112.0);
-        wpm.setStrokeType(StrokeType.OUTSIDE);
-        wpm.setStrokeWidth(0.0);
-        wpm.setFont(new Font(13.0));
-        getChildren().add(wpm);
+        vitesse.setLayoutX(272.0);
+        vitesse.setLayoutY(112.0);
+        vitesse.setStrokeType(StrokeType.OUTSIDE);
+        vitesse.setStrokeWidth(0.0);
+        vitesse.setFont(new Font(13.0));
+        getChildren().add(vitesse);
 
-        Text acc = new Text("% accuracy");
-        // acc.setFill(Color.WHITE);
-        acc.setLayoutX(362.0);
-        acc.setLayoutY(112.0);
-        acc.setStrokeType(StrokeType.OUTSIDE);
-        acc.setStrokeWidth(0.0);
-        acc.setFont(new Font(13.0));
-        getChildren().add(acc);
+        Text accuracy = new Text("% accuracy");
+        accuracy.setLayoutX(362.0);
+        accuracy.setLayoutY(112.0);
+        accuracy.setStrokeType(StrokeType.OUTSIDE);
+        accuracy.setStrokeWidth(0.0);
+        accuracy.setFont(new Font(13.0));
+        getChildren().add(accuracy);
 
         wordsPerMin = new Text();
-        wordsPerMin.setId("wpm");
         wordsPerMin.setLayoutX(279.0);
         wordsPerMin.setLayoutY(93.0);
         wordsPerMin.setStrokeType(StrokeType.OUTSIDE);
@@ -124,41 +120,37 @@ public class game extends AnchorPane {
         wordsPerMin.setFont(new Font(21.0));
         getChildren().add(wordsPerMin);
 
-        accuracy = new Text();
-        accuracy.setId("accuracy");
-        accuracy.setLayoutX(367.0);
-        accuracy.setLayoutY(93.0);
-        accuracy.setStrokeType(StrokeType.OUTSIDE);
-        accuracy.setStrokeWidth(0.0);
-        accuracy.setTextAlignment(TextAlignment.CENTER);
-        accuracy.setWrappingWidth(49.0);
-        accuracy.setFont(new Font(21.0));
-        getChildren().add(accuracy);
+        accuracyvalue = new Text();
+        accuracyvalue.setLayoutX(367.0);
+        accuracyvalue.setLayoutY(93.0);
+        accuracyvalue.setStrokeType(StrokeType.OUTSIDE);
+        accuracyvalue.setStrokeWidth(0.0);
+        accuracyvalue.setTextAlignment(TextAlignment.CENTER);
+        accuracyvalue.setWrappingWidth(49.0);
+        accuracyvalue.setFont(new Font(21.0));
+        getChildren().add(accuracyvalue);
 
         userWord = new TextField();
-        userWord.setId("useWord");
         userWord.setAlignment(Pos.CENTER);
         userWord.setLayoutX(145.0);
         userWord.setLayoutY(222.0);
         userWord.setPrefHeight(42.0);
         userWord.setPrefWidth(214.0);
         userWord.setFont(new Font(20.0));
-        userWord.setOnKeyPressed((event -> gc.startGame(event)));
+        userWord.setOnKeyPressed((event -> gamecontroler.startGame(event)));
         getChildren().add(userWord);
 
-        pw = new Text("word");
-        pw.setId("programWord");
-        pw.setLayoutX(145.0);
-        pw.setLayoutY(302.0);
-        pw.setStrokeType(StrokeType.OUTSIDE);
-        pw.setStrokeWidth(0.0);
-        pw.setTextAlignment(TextAlignment.CENTER);
-        pw.setWrappingWidth(184.74749755859375);
-        pw.setFont(new Font(21.0));
-        getChildren().add(pw);
+        userEntry = new Text("word");
+        userEntry.setLayoutX(145.0);
+        userEntry.setLayoutY(302.0);
+        userEntry.setStrokeType(StrokeType.OUTSIDE);
+        userEntry.setStrokeWidth(0.0);
+        userEntry.setTextAlignment(TextAlignment.CENTER);
+        userEntry.setWrappingWidth(184.74749755859375);
+        userEntry.setFont(new Font(21.0));
+        getChildren().add(userEntry);
 
         firstWordText = new Text();
-        firstWordText.setId("programWord");
         firstWordText.setLayoutX(145.0);
         firstWordText.setLayoutY(192.0);
         firstWordText.setStrokeType(StrokeType.OUTSIDE);
@@ -168,26 +160,25 @@ public class game extends AnchorPane {
         firstWordText.setFont(new Font(21.0));
         getChildren().add(firstWordText);
 
-        sp = new Text("word");
-        sp.setFill(Color.valueOf("#0000005b"));
-        sp.setId("secondProgram");
-        sp.setLayoutX(362.0);
-        sp.setLayoutY(191.0);
-        sp.setStrokeType(StrokeType.OUTSIDE);
-        sp.setStrokeWidth(0.0);
-        sp.setTextAlignment(TextAlignment.CENTER);
-        sp.setWrappingWidth(184.74749755859375);
-        sp.setFont(new Font(21.0));
-        getChildren().add(sp);
+        text = new Text("word");
+        text.setFill(Color.valueOf("#0000005b"));
+        text.setId("secondProgram");
+        text.setLayoutX(362.0);
+        text.setLayoutY(191.0);
+        text.setStrokeType(StrokeType.OUTSIDE);
+        text.setStrokeWidth(0.0);
+        text.setTextAlignment(TextAlignment.CENTER);
+        text.setWrappingWidth(184.74749755859375);
+        text.setFont(new Font(21.0));
+        getChildren().add(text);
 
-        this.play = new Button("Play again");
-        play.setId("playAgain");
-        play.setLayoutX(222.254655);
-        play.setLayoutY(351.0);
-        play.setMnemonicParsing(false);
-        play.setOnAction(event -> {
+        this.menu = new Button("Menu");
+        menu.setLayoutX(222.254655);
+        menu.setLayoutY(351.0);
+        menu.setMnemonicParsing(false);
+        menu.setOnAction(event -> {
             try {
-                gc.toMainMenu();
+                gameControler.toMainMenu();;
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -195,13 +186,69 @@ public class game extends AnchorPane {
         });
 
         lastgame=new Button("Jouer a la dernère partie sauvegardée");
-        getChildren().add(play);
+        getChildren().add(menu);
         lastgame.setLayoutX(135.254655);
         lastgame.setLayoutY(391.0);
         lastgame.setMnemonicParsing(false);
         lastgame.setOnAction(event -> {
-            gc.playLastGameRecorded();
+            gamecontroler.playLastGameRecorded();
         });
         getChildren().add(lastgame);
+    }
+
+    public gameControler getGamecontroler() {
+        return gamecontroler;
+    }
+
+    public Text getSecondvalue() {
+        return secondvalue;
+    }
+
+    public Button getMenu() {
+        return menu;
+    }
+
+    public Text getUserEntry() {
+        return userEntry;
+    }
+
+    public Text getText() {
+        return text;
+    }
+
+    public TextField getUserWord() {
+        return userWord;
+    }
+
+    public Text getWordsPerMin() {
+        return wordsPerMin;
+    }
+
+    public Text getAccuracyvalue() {
+        return accuracyvalue;
+    }
+
+    public Text getFirstWordText() {
+        return firstWordText;
+    }
+
+    public Text getVie() {
+        return vie;
+    }
+
+    public Text getVieValue() {
+        return vieValue;
+    }
+
+    public Circle getTetrisCircle() {
+        return tetrisCircle;
+    }
+
+    public Text getSecond() {
+        return second;
+    }
+
+    public Button getLastgame() {
+        return lastgame;
     }
 }

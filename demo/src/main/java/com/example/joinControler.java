@@ -1,8 +1,4 @@
 package com.example;
-
-import java.io.IOException;
-
-import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
@@ -13,24 +9,16 @@ public class joinControler {
         this.laucher = h;
     }
 
+    /*Cette méthode crée l'objet client
+     */
     public void play(KeyEvent ke) {
-
         if (ke.getCode().equals(KeyCode.SPACE)) {
-            String str = laucher.adress.getText();
+            String str = laucher.getAdress().getText();
             try {
                 Client c = new Client(str);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    public void toMainMenu() throws IOException {
-        gameLaucherController glc = new gameLaucherController(null);
-        gameLauncher g = new gameLauncher(null);
-        g.setControler(glc);
-        glc.setGame(g);
-        Scene s = new Scene(g, 600, 450);
-        App.changeScene(s);
     }
 }

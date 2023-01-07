@@ -65,7 +65,7 @@ public class hostJoinPanel extends GridPane{
         play.setMnemonicParsing(false);
         play.setOnAction(event -> {
             try {
-                controler.toMainMenu();
+                gameControler.toMainMenu();;
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

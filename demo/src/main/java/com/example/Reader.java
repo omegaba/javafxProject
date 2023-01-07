@@ -7,20 +7,20 @@ import java.io.PrintWriter;
 public class Reader extends Thread
 
 {
-    BufferedReader con_br;
-    PrintWriter sock_pw;
-    Object clientOrServer;
-    gameControler gameCtrl;
+    private BufferedReader con_br;
+    private PrintWriter sock_pw;
+    private Object clientOrServer;
+    private gameControler gameCtrl;
 
     public Reader(Builder builder) {
         super(builder.name);
         this.con_br = builder.con_br;
         this.sock_pw = builder.sock_pw;
-        this.clientOrServer=builder.clientOrServer;
+        this.clientOrServer = builder.clientOrServer;
         if (clientOrServer instanceof Client)
-            this.gameCtrl = ((Client) builder.clientOrServer).gameCtrl;
+            this.gameCtrl = ((Client) builder.clientOrServer).getControler();
         else
-            this.gameCtrl = ((Server) builder.clientOrServer).gameCtrl;
+            this.gameCtrl = ((Server) builder.clientOrServer).getControler();
     }
 
     public static Builder builder() {
@@ -58,7 +58,10 @@ public class Reader extends Thread
         }
     }
 
-
+    /*
+     * Cette méthode s'occupe de forcer la avalidation
+     * ou d'ajouter d'un mot dans le tampon lorsqu'on est en mode multi-joueur
+     */
     public void actionRedWord() {
         if (gameCtrl.getTampon().size() == 15) {
             gameCtrl.validation();
@@ -68,15 +71,22 @@ public class Reader extends Thread
             for (int i = 1; i < gameCtrl.getTampon().size(); i++) {
                 gameCtrl.getStringBuilder().append(gameCtrl.getTampon().get(i) + " ");
             }
-            gameCtrl.getGame().sp.setText(gameCtrl.getStringBuilder().toString());
+            gameCtrl.getGame().getText().setText(gameCtrl.getStringBuilder().toString());
             gameCtrl.setTimer(Math.round((5 * Math.pow(0.9, gameCtrl.getDifficulty())) * 100.0) / 100.0);
         }
     }
 
+    /*Cette méthode s'occupe de l'intérction entre le client et le serveur,
+     * on va lire dans con_br
+     * et exécuter des actions  en fonction de celui qui reçoit le message entre le client et le serveur 
+    */
+
     public void run() {
         String str;
         try {
-            while ((str = con_br.readLine()) != null) {;
+            while ((str = con_br.readLine()) != null) {
+                ;
+
                 if (clientOrServer instanceof Client) {
                     System.out.println("\rserver: " + str);
                     System.out.print("> ");

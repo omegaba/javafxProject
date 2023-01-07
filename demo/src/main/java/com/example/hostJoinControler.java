@@ -10,7 +10,9 @@ public class hostJoinControler {
     public hostJoinControler(hostJoinPanel h) {
         this.laucher = h;
     }
-
+/*Cette méthode crée, si host vaut vrai, l'objet serveur 
+ * autrement elle affiche le panel pour joindre une partie
+ */
     public void playSettings(boolean host) {
 
         if (host) {
@@ -26,14 +28,5 @@ public class hostJoinControler {
             Scene s2 = new Scene(j, 600, 450);
             App.changeScene(s2);
         }
-    }
-
-    public void toMainMenu() throws IOException {
-        gameLaucherController glc = new gameLaucherController(null);
-        gameLauncher g = new gameLauncher(null);
-        g.setControler(glc);
-        glc.setGame(g);
-        Scene s = new Scene(g, 600, 450);
-        App.changeScene(s);
     }
 }

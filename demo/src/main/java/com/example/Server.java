@@ -10,13 +10,22 @@ import java.util.concurrent.ExecutionException;
 import javafx.scene.Scene;
 
 public class Server {
-    public static int port = 13000;
-    public static BufferedReader con_br = new BufferedReader(new InputStreamReader(System.in));
-    BufferedReader csock_br;
-    PrintWriter csock_pw;
-    ServerSocket ssock;
-    Socket csock;
-    public gameControler gameCtrl;
+    private  static int port = 13000;
+    private static BufferedReader con_br = new BufferedReader(new InputStreamReader(System.in));
+    private BufferedReader csock_br;
+    private PrintWriter csock_pw;
+    
+    private ServerSocket ssock;
+   
+    private Socket csock;
+    private gameControler gameCtrl;
+
+    
+
+    /*Le constructeur de la classe Serveur  s'occupe de créer le serveur
+     * puis il attend qu'un utilisateur se connecte
+     * et enfin une instance de jeu est créée pour le host
+     */
 
     public Server() throws IOException, InterruptedException, ExecutionException {
         ssock = new ServerSocket(port);
@@ -38,4 +47,22 @@ public class Server {
                 .clientOrServer(this).build();
         chat_server_Reader.start();
     }
+
+    public gameControler getControler(){
+        return gameCtrl;
+    }
+
+    public Socket getCsock(){
+        return csock;
+    }
+
+    public PrintWriter getCsock_pw() {
+        return csock_pw;
+    }
+
+    public ServerSocket getSsock() {
+        return ssock;
+    }
+
+
 }

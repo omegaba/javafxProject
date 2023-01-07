@@ -10,7 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 
 public class joinPanel extends GridPane {
-    public TextField adress;
+    private TextField adress;
     private joinControler controler;
     private Button play;
 
@@ -43,7 +43,7 @@ public class joinPanel extends GridPane {
         play.setMnemonicParsing(false);
         play.setOnAction(event -> {
             try {
-                controler.toMainMenu();
+                gameControler.toMainMenu();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -51,5 +51,9 @@ public class joinPanel extends GridPane {
         });
         pane.getChildren().add(play);
         this.getChildren().add(pane);
+    }
+
+    public TextField getAdress(){
+        return adress;
     }
 }

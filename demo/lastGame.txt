@@ -1,10 +1,6 @@
 0.0
-0.0
+3.0
 true
 false
 0
-<<<<<<< HEAD
 false
-=======
-true
->>>>>>> b3510fbac9934c024266b3adac33f9de77f9c524

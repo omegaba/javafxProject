@@ -47,13 +47,14 @@ public final class gameControler {
      * @param builder
      */
     private gameControler(Builder builder) {
+
         this.game = builder.game;
         this.tetris = builder.tetris;
         this.difficulte = builder.difficulte;
         this.playWwords = builder.playWwords;
         this.multi = builder.multi;
         this.clientOrHost = builder.clientOrHost;
-        this.nbwords=builder.nbwords;
+        this.nbwords = builder.nbwords;
         if (!playWwords)
             executor = Executors.newScheduledThreadPool(1);
         init();
@@ -71,12 +72,11 @@ public final class gameControler {
         this.second = 0;
     }
 
-
     public static Builder builder() {
         return new Builder();
     }
 
-    public static class Builder{
+    public static class Builder {
         private game game;
         private boolean tetris;
         private double difficulte;
@@ -168,8 +168,8 @@ public final class gameControler {
             Random r = new Random();
             int next = r.nextInt(5);
             if (next == 2) {
-                game.firstWordText.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
-                game.firstWordText.setFill(Color.RED);
+                game.getFirstWordText().setFont(Font.font("Verdana", FontWeight.BOLD, 16));
+                game.getFirstWordText().setFill(Color.RED);
                 isRed = true;
             }
         }
@@ -181,14 +181,14 @@ public final class gameControler {
             Random r = new Random();
             int next = r.nextInt(10);
             if (next == 2) {
-                game.firstWordText.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
-                game.firstWordText.setFill(Color.BLUE);
+                game.getFirstWordText().setFont(Font.font("Verdana", FontWeight.BOLD, 16));
+                game.getFirstWordText().setFill(Color.BLUE);
                 isBlue = true;
             }
         }
     }
 
-    public final void toMainMenu() throws IOException {
+    public static final void toMainMenu() throws IOException {
         gameLaucherController glc = new gameLaucherController(null);
         gameLauncher g = new gameLauncher(null);
         g.setControler(glc);
@@ -202,7 +202,7 @@ public final class gameControler {
      * si une game à été sauvegardé, elle est lancée;
      * autrement le bouton n'apparait pas
      */
-    public final void playLastGameRecorded() {
+    public static final void playLastGameRecorded() {
 
         ArrayList<String> datalist = new ArrayList<>();
         File f = new File("lastGame.txt");
@@ -234,21 +234,20 @@ public final class gameControler {
         App.changeScene(s);
     }
 
-
     public final void init() {
 
         if (tetris == false) {
-            game.vie.setVisible(false);
-            game.tetrisCircle.setVisible(false);
-            game.vieValue.setVisible(false);
+            game.getVie().setVisible(false);
+            game.getTetrisCircle().setVisible(false);
+            game.getVieValue().setVisible(false);
         } else {
-            game.tetrisCircle.setVisible(true);
-            game.vie.setVisible(true);
-            game.vieValue.setVisible(true);
-            game.vieValue.setText(Integer.toString(vie));
+            game.getTetrisCircle().setVisible(true);
+            game.getVie().setVisible(true);
+            game.getVieValue().setVisible(true);
+            game.getVieValue().setText(Integer.toString(vie));
         }
 
-        game.lastgame.setVisible(false);
+        game.getLastgame().setVisible(false);
 
         // Parametrage des données pour le fichier de sauvegarde de la dernière partie
         // jouée
@@ -264,21 +263,24 @@ public final class gameControler {
             e.printStackTrace();
         }
         if (playWwords) {
-            game.scd.setText("Words left");
+            game.getSecond().setText("Words left");
         } else {
-            game.scd.setText("Seconds");
+            game.getSecond().setText("Seconds");
         }
 
         // TODO Auto-generated method stub
-        this.game.play.setVisible(true);
-        this.game.play.setDisable(false);
+        if (!multi) {
+            this.game.getMenu().setVisible(true);
+            this.game.getMenu().setDisable(false);
+        }
+
         if (!playWwords) {
             if (tetris) {
                 String t = String.format("%.2f", timer);
-                this.game.nb1.setText(t);
+                this.game.getSecondvalue().setText(t);
             }
         } else {
-            this.game.nb1.setText(String.valueOf(nbwords));
+            this.game.getSecondvalue().setText(String.valueOf(nbwords));
         }
         addToList();
         Collections.shuffle(words);
@@ -287,11 +289,11 @@ public final class gameControler {
         for (int i = 1; i < tampon.size(); i++) {
             sb.append(tampon.get(i) + " ");
         }
-        game.pw.setText("");
-        game.sp.setText(sb.toString());
-        game.firstWordText.setText(tampon.get(0));
+        game.getUserEntry().setText("");
+        game.getText().setText(sb.toString());
+        game.getFirstWordText().setText(tampon.get(0));
 
-        game.firstWordText.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
+        game.getFirstWordText().setFont(Font.font("Verdana", FontWeight.BOLD, 16));
     }
 
     public final void printRedWord() {
@@ -300,12 +302,12 @@ public final class gameControler {
             // envoie du message pour signaler qu'il faut ajouter un mot dans le tampon
             // enemie
             if (clientOrHost instanceof Client) {
-                ((Client) clientOrHost).sock_pw.println("rouge");
+                ((Client) clientOrHost).getSock_pw().println("rouge");
             } else {
-                ((Server) clientOrHost).csock_pw.println("rouge");
+                ((Server) clientOrHost).getCsock_pw().println("rouge");
             }
-            game.firstWordText.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
-            game.firstWordText.setFill(Color.BLACK);
+            game.getFirstWordText().setFont(Font.font("Verdana", FontWeight.BOLD, 16));
+            game.getFirstWordText().setFill(Color.BLACK);
         }
     }
 
@@ -315,29 +317,30 @@ public final class gameControler {
                 isBlue = false;
                 if (vie < 5) {
                     vie += 1;
-                    game.vieValue.setText(Integer.toString(vie));
+                    game.getVieValue().setText(Integer.toString(vie));
                 }
-                game.firstWordText.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
-                game.firstWordText.setFill(Color.BLACK);
+                game.getFirstWordText().setFont(Font.font("Verdana", FontWeight.BOLD, 16));
+                game.getFirstWordText().setFill(Color.BLACK);
             }
         }
     }
 
     // affiche game Over dans le textfield
     public final void printGameOver() {
-        game.userWord.setText("Game over");
-        game.userWord.setDisable(true);
 
-        game.lastgame.setVisible(true);
-        // on sauvegarde la configuration du jeu dans un strin
-        game.play.setVisible(true);
-        game.play.setDisable(false);
+        game.getUserWord().setDisable(true);
+        game.getUserWord().setText("Game over");
+        if (!multi) {
+            game.getLastgame().setVisible(true);
+            game.getMenu().setVisible(true);
+            game.getMenu().setDisable(false);
+        }
         if (!playWwords)
             executor.shutdown();
     }
 
     public final void validation() {
-        String s = game.userWord.getText();
+        String s = game.getUserWord().getText();
         String real = tampon.remove(0);
 
         // Un mot sera rajouté selement si la file est à moitié remplie
@@ -350,40 +353,52 @@ public final class gameControler {
         if (s.replaceAll("\\s+", "").equalsIgnoreCase(real.replaceAll("\\s+", ""))) {
             counter++;
             caracterUtile += s.length();
-            if (counter % 10 == 0) {
+
+            /* tout les 100 mots, la difficulté est augmentée */
+            if (counter % 100 == 0) {
                 difficulte++;
             }
 
-            // *****clacul de la vitesse
-            // si le temps ne vaut pas une minute
+            /*
+             * calcul de la vitesse
+             * si le temps ne vaut pas une minute
+             */
+
             if (timerMinute == 0) {
-                game.wordsPerMin.setText(String.valueOf(caracterUtile / 5));
+                game.getWordsPerMin().setText(String.valueOf(caracterUtile / 5));
             }
-            // autrement la vitesse est e nombre de caractères utiles, divisé par le temps
-            // en minute, divisé encore
-            // par 5 (ici, on considère par convention qu’un mot fait en moyenne 5
-            // caractères).
+            /*
+             * autrement la vitesse est e nombre de caractères utiles, divisé par le temps
+             *  en minute, divisé encore
+             * par 5 (ici, on considère par convention qu’un mot fait en moyenne 5
+             * caractères).
+             */
+
             else {
-                game.wordsPerMin.setText(String.valueOf((caracterUtile / timerMinute) / 5));
+                game.getWordsPerMin().setText(String.valueOf((caracterUtile / timerMinute) / 5));
             }
 
             // dans le cas où on joue avec un nombre de mot comme délimiteur
             if (playWwords) {
                 nbwords -= 1;
-                game.nb1.setText(String.valueOf(nbwords));
+                game.getSecondvalue().setText(String.valueOf(nbwords));
                 if (nbwords == 0) {
                     printGameOver();
                 }
             }
-            game.pw.setFill(Color.GREEN);
+            game.getUserEntry().setFill(Color.GREEN);
             printBlueWord();
             printRedWord();
-        } else {
-            game.pw.setFill(Color.RED);
+        } 
+        
+        
+        /*si le mot tappé est faux */
+        else {
+            game.getUserEntry().setFill(Color.RED);
 
             if (tetris) {
                 vie -= 1;
-                game.vieValue.setText(Integer.toString(vie));
+                game.getVieValue().setText(Integer.toString(vie));
                 if (vie == 0) {
                     printGameOver();
                 }
@@ -400,19 +415,19 @@ public final class gameControler {
         }
 
         // on met à jour les différents composants
-        game.userWord.setText("");
-        game.accuracy.setText(String.valueOf(Math.round((counter * 1.0 / countAll) * 100)));
-        game.pw.setText(s);
+        game.getUserWord().setText("");
+        game.getAccuracyvalue().setText(String.valueOf(Math.round((counter * 1.0 / countAll) * 100)));
+        game.getUserEntry().setText(s);
 
-        // on reset le stringbuilder afin d'enlever le premier mt et de rajouter un
+        // on reset le stringbuilder afin d'enlever le premier mot et d'en rajouter un
         // autre à la fin
         sb.setLength(0);
         for (int i = 1; i < tampon.size(); i++) {
             sb.append(tampon.get(i) + " ");
         }
 
-        game.sp.setText(sb.toString());
-        game.firstWordText.setText(tampon.get(0));
+        game.getText().setText(sb.toString());
+        game.getFirstWordText().setText(tampon.get(0));
 
     }
 
@@ -434,6 +449,9 @@ public final class gameControler {
 
     }
 
+    /*le runnable nous permet d'implémenter le timer 
+     * 
+     */
     Runnable r = new Runnable() {
         @Override
         public void run() {
@@ -445,17 +463,17 @@ public final class gameControler {
 
             if (tetris == false) {
                 if (timer > -1) {
-                    game.nb1.setText(String.valueOf((int)timer));
+                    game.getSecondvalue().setText(String.valueOf((int) timer));
                     timer -= 1;
                 } else {
                     if (timer <= 0) {
-                        game.userWord.setDisable(true);
-                        game.userWord.setText("Game over");
+                        game.getUserWord().setDisable(true);
+                        game.getUserWord().setText("Game over");
                     }
 
                     if (timer == -4) {
-                        game.play.setVisible(true);
-                        game.play.setDisable(false);
+                        game.getMenu().setVisible(true);
+                        game.getMenu().setDisable(false);
                         executor.shutdown();
                     }
 
@@ -466,9 +484,9 @@ public final class gameControler {
                     if (vie == 0)
                         printGameOver();
                     if (timer < 0) {
-                        game.nb1.setText(String.valueOf(0));
+                        game.getSecondvalue().setText(String.valueOf(0));
                     } else {
-                        game.nb1.setText(String.format("%.2f", timer));
+                        game.getSecondvalue().setText(String.format("%.2f", timer));
                     }
                     timer -= 1;
                 } else {
@@ -485,7 +503,7 @@ public final class gameControler {
                             for (int i = 1; i < tampon.size(); i++) {
                                 sb.append(tampon.get(i) + " ");
                             }
-                            game.sp.setText(sb.toString());
+                            game.getText().setText(sb.toString());
                             timer = Math.round((5 * Math.pow(0.9, difficulte)) * 100.0) / 100.0;
                         }
                     }
@@ -503,10 +521,10 @@ public final class gameControler {
         if (clientOrHost != null) {
             try {
                 if (clientOrHost instanceof Client)
-                    ((Client) clientOrHost).sock.close();
+                    ((Client) clientOrHost).getSock().close();
                 else {
-                    ((Server) clientOrHost).csock.close();
-                    ((Server) clientOrHost).ssock.close();
+                    ((Server) clientOrHost).getCsock().close();
+                    ((Server) clientOrHost).getSsock().close();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
