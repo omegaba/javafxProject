@@ -16,11 +16,6 @@ public class hostJoinControler {
         if (host) {
             try {
                 Server serv = new Server();
-                // game g = new game(null);
-                // gameControler gc = new gameControler(g, 120, 0, true, false, true, serv);
-                // g.setControler(gc);
-                // Scene s = new Scene(g, 600, 450);
-                // App.changeScene(s);
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -28,12 +28,14 @@ public class Server {
         csock_pw = new PrintWriter(csock.getOutputStream(), true);
 
         game g = new game(null);
-        gameCtrl = new gameControler(g, 120, 0, true, false,0, true, this);
+        gameCtrl = gameControler.builder().game(g).timer(120).difficulte(0).tetris(true).playWwords(false)
+                .nbwords(0).multi(true).clientOrHost(this).build();
         g.setControler(gameCtrl);
         Scene s = new Scene(g, 600, 450);
         App.changeScene(s);
 
-        Thread chat_server_Reader = new Reader("chat_server_writer", csock_pw, csock_br, this);
+        Thread chat_server_Reader = Reader.builder().name("chat_server_writer").sock_pw(csock_pw).con_br(csock_br)
+                .clientOrServer(this).build();
         chat_server_Reader.start();
     }
 }

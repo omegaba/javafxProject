@@ -23,12 +23,15 @@ public class Client {
         System.out.println("Connection established");
 
         game g = new game(null);
-        gameCtrl = new gameControler(g, 120, 0, true, false,0, true, this);
+        gameCtrl = gameControler.builder().game(g).timer(120).difficulte(0).tetris(true).playWwords(false)
+                .nbwords(0).multi(true).clientOrHost(this).build();
+
         g.setControler(gameCtrl);
         Scene s = new Scene(g, 600, 450);
         App.changeScene(s);
 
-        Thread chat_client_reader = new Reader("chat_client_reader", sock_pw, sock_br, this);
+        Thread chat_client_reader = Reader.builder().name("chat_client_reader").sock_pw(sock_pw).con_br(sock_br)
+                .clientOrServer(this).build();
         chat_client_reader.start();
     }
 }

@@ -16,7 +16,9 @@ public class normalModeControler {
 
     public void playSettings(boolean playWwords) {
         game g = new game(null);
-        gameControler gc = new gameControler(g, 120, 0, false, playWwords,3,false,null);
+        gameControler gc = gameControler.builder().game(g).timer(120).difficulte(0).tetris(false).playWwords(playWwords)
+                .nbwords(3).multi(false).clientOrHost(null).build();
+
         g.setControler(gc);
         Scene s = new Scene(g, 600, 450);
         App.changeScene(s);

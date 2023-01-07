@@ -59,7 +59,9 @@ public class gameLaucherController {
         boolean pww = Boolean.valueOf(datalist.get(3));
         int nb = Integer.parseInt(datalist.get(4));
         boolean mult = Boolean.valueOf(datalist.get(5));
-        gameControler gc = new gameControler(g, t, d, tet, pww, nb, mult, null);
+        gameControler gc = gameControler.builder().game(g).timer(t).difficulte(d).tetris(tet).playWwords(pww)
+                .nbwords(nb).multi(mult).clientOrHost(null).build();
+
         g.setControler(gc);
         Scene s = new Scene(g, 600, 450);
         App.changeScene(s);

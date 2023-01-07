@@ -19,7 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-public class gameControler {
+public final class gameControler {
     private boolean tetris;
     private game game;
     private int first = 1;
@@ -43,24 +43,24 @@ public class gameControler {
     private StringBuilder sb = new StringBuilder();
     private ScheduledExecutorService executor = null;
 
-    public gameControler(game game, double time, double difficulte, boolean tetris, boolean playWw, int nbwords,
-            boolean multi, Object clientOrHost) {
-
-        this.game = game;
-        this.tetris = tetris;
-        this.difficulte = difficulte;
-        playWwords = playWw;
-        this.multi = multi;
-        this.clientOrHost = clientOrHost;
-        this.nbwords = nbwords;
-        if (playWwords == true) {
-
-        } else {
+    /**
+     * @param builder
+     */
+    private gameControler(Builder builder) {
+        this.game = builder.game;
+        this.tetris = builder.tetris;
+        this.difficulte = builder.difficulte;
+        this.playWwords = builder.playWwords;
+        this.multi = builder.multi;
+        this.clientOrHost = builder.clientOrHost;
+        this.nbwords=builder.nbwords;
+        if (!playWwords)
             executor = Executors.newScheduledThreadPool(1);
-        }
         init();
         if (!tetris) {
-            timer = (int) time;
+
+            this.timer = builder.timer;
+
         } else {
             timer = 5 * Math.pow(0.9, difficulte);
         }
@@ -71,22 +71,82 @@ public class gameControler {
         this.second = 0;
     }
 
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder{
+        private game game;
+        private boolean tetris;
+        private double difficulte;
+        private boolean playWwords;
+        private boolean multi;
+        private Object clientOrHost;
+        private int nbwords;
+        private double timer;
+
+        public gameControler build() {
+            return new gameControler(this);
+        }
+
+        public Builder game(game game) {
+            this.game = game;
+            return this;
+        }
+
+        public Builder tetris(boolean tetris) {
+            this.tetris = tetris;
+            return this;
+        }
+
+        public Builder difficulte(double difficulte) {
+            this.difficulte = difficulte;
+            return this;
+        }
+
+        public Builder playWwords(boolean playWwords) {
+            this.playWwords = playWwords;
+            return this;
+        }
+
+        public Builder multi(boolean multi) {
+            this.multi = multi;
+            return this;
+        }
+
+        public Builder clientOrHost(Object clientOrHost) {
+            this.clientOrHost = clientOrHost;
+            return this;
+        }
+
+        public Builder nbwords(int nbwords) {
+            this.nbwords = nbwords;
+            return this;
+        }
+
+        public Builder timer(double timer) {
+            this.timer = timer;
+            return this;
+        }
+    }
+
     // Initialise le tampon avec 15 mots
-    public void manageTampon() {
+    public final void manageTampon() {
         for (int i = 0; i < 15; i++) {
             addToTampon();
         }
     }
 
     // Ajoute un mot au tampon
-    public void addToTampon() {
+    public final void addToTampon() {
         Random r = new Random();
         int x = r.nextInt(words.size());
         tampon.add(words.get(x));
     }
 
     // add words to array list
-    public void addToList() {
+    public final void addToList() {
         File f = new File("src/main/java/com/example/wordsList");
         BufferedReader reader;
         try {
@@ -103,7 +163,7 @@ public class gameControler {
         }
     }
 
-    public void canRemoveLife() {
+    public final void canRemoveLife() {
         if (tetris) {
             Random r = new Random();
             int next = r.nextInt(5);
@@ -116,7 +176,7 @@ public class gameControler {
     }
 
     // Si on est en mode tetris, ajoute ue vie lorsqu'un cmot en bleu est validé
-    public void canAddLife() {
+    public final void canAddLife() {
         if (tetris) {
             Random r = new Random();
             int next = r.nextInt(10);
@@ -128,7 +188,7 @@ public class gameControler {
         }
     }
 
-    public void toMainMenu() throws IOException {
+    public final void toMainMenu() throws IOException {
         gameLaucherController glc = new gameLaucherController(null);
         gameLauncher g = new gameLauncher(null);
         g.setControler(glc);
@@ -142,7 +202,7 @@ public class gameControler {
      * si une game à été sauvegardé, elle est lancée;
      * autrement le bouton n'apparait pas
      */
-    public void playLastGameRecorded() {
+    public final void playLastGameRecorded() {
 
         ArrayList<String> datalist = new ArrayList<>();
         File f = new File("lastGame.txt");
@@ -166,13 +226,16 @@ public class gameControler {
         boolean pww = Boolean.valueOf(datalist.get(3));
         int nb = Integer.parseInt(datalist.get(4));
         boolean mult = Boolean.valueOf(datalist.get(5));
-        gameControler gc = new gameControler(g, t, d, tet, pww, nb, mult, null);
+        gameControler gc = gameControler.builder().game(g).timer(t).difficulte(d).tetris(tet).playWwords(pww)
+                .nbwords(nb).multi(mult).clientOrHost(null).build();
+
         g.setControler(gc);
         Scene s = new Scene(g, 600, 450);
         App.changeScene(s);
     }
 
-    public void init() {
+
+    public final void init() {
 
         if (tetris == false) {
             game.vie.setVisible(false);
@@ -231,7 +294,7 @@ public class gameControler {
         game.firstWordText.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
     }
 
-    public void printRedWord() {
+    public final void printRedWord() {
         if (tetris && isRed) {
             isRed = false;
             // envoie du message pour signaler qu'il faut ajouter un mot dans le tampon
@@ -246,7 +309,7 @@ public class gameControler {
         }
     }
 
-    public void printBlueWord() {
+    public final void printBlueWord() {
         if (tetris) {
             if (isBlue == true) {
                 isBlue = false;
@@ -261,7 +324,7 @@ public class gameControler {
     }
 
     // affiche game Over dans le textfield
-    public void printGameOver() {
+    public final void printGameOver() {
         game.userWord.setText("Game over");
         game.userWord.setDisable(true);
 
@@ -273,7 +336,7 @@ public class gameControler {
             executor.shutdown();
     }
 
-    public void validation() {
+    public final void validation() {
         String s = game.userWord.getText();
         String real = tampon.remove(0);
 
@@ -353,7 +416,7 @@ public class gameControler {
 
     }
 
-    public void startGame(KeyEvent ke) {
+    public final void startGame(KeyEvent ke) {
 
         if (!playWwords) {
             if (first == 1) {
@@ -436,7 +499,7 @@ public class gameControler {
         }
     };
 
-    public void closeServer() {
+    public final void closeServer() {
         if (clientOrHost != null) {
             try {
                 if (clientOrHost instanceof Client)
@@ -451,23 +514,23 @@ public class gameControler {
         }
     }
 
-    public List<String> getTampon() {
+    public final List<String> getTampon() {
         return tampon;
     }
 
-    public double getDifficulty() {
+    public final double getDifficulty() {
         return difficulte;
     }
 
-    public StringBuilder getStringBuilder() {
+    public final StringBuilder getStringBuilder() {
         return sb;
     }
 
-    public void setTimer(double t) {
+    public final void setTimer(double t) {
         timer = t;
     }
 
-    public game getGame() {
+    public final game getGame() {
         return game;
     }
 
