@@ -1,35 +1,34 @@
 package com.example;
 
 import java.net.*;
+import java.util.concurrent.ExecutionException;
+import javafx.scene.Scene;
 import java.io.*;
 
-class Client {
+public class Client {
     public static int port = 13000;
     public static BufferedReader con_br = new BufferedReader(new InputStreamReader(System.in));
+    BufferedReader sock_br;
+    PrintWriter sock_pw;
+    Socket sock;
+    public gameControler gameCtrl;
 
-    static void print_a() {
-        System.out.println("message reçu, ajout de mot");
-    }
-
-    public static void main(String[] args) throws IOException {
+    public Client(String adr) throws IOException, InterruptedException, ExecutionException {
         System.out.print("Enter server address: ");
-        String address = con_br.readLine();
-        Socket sock = new Socket(address, port);
-        BufferedReader sock_br = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-        PrintWriter sock_pw = new PrintWriter(sock.getOutputStream(), true);
+        String address = adr;
+        sock = new Socket(address, port);
+
+        sock_br = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+        sock_pw = new PrintWriter(sock.getOutputStream(), true);
         System.out.println("Connection established");
 
-        Thread chat_client_writer = new Writer("chat_client_writer", sock_pw, con_br);
-        chat_client_writer.start();
+        game g = new game(null);
+        gameCtrl = new gameControler(g, 120, 0, true, false,0, true, this);
+        g.setControler(gameCtrl);
+        Scene s = new Scene(g, 600, 450);
+        App.changeScene(s);
 
-        String s;
-        while ((s = sock_br.readLine()) != null) {
-            if (s.equals("rouge")) {
-                print_a();
-            }
-            // System.out.println("\rserver: " + s);
-            // System.out.print("> ");
-        }
-        sock.close();
+        Thread chat_client_reader = new Reader("chat_client_reader", sock_pw, sock_br, this);
+        chat_client_reader.start();
     }
 }
