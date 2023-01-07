@@ -26,7 +26,8 @@ public class game extends AnchorPane {
     public Text vie;
     public Text vieValue;
     public Circle tetrisCircle;
-
+    public Text scd;
+    public Button lastgame;
     public void setControler(gameControler g) {
         this.gc = g;
     }
@@ -58,7 +59,7 @@ public class game extends AnchorPane {
         nb1.setFont(new Font(21.0));
         getChildren().add(nb1);
 
-        Text scd = new Text("seconds");
+        scd = new Text("");
         scd.setLayoutX(174.0);
         scd.setLayoutY(112.0);
         scd.setStrokeType(StrokeType.OUTSIDE);
@@ -193,6 +194,15 @@ public class game extends AnchorPane {
                 e.printStackTrace();
             }
         });
+
+        lastgame=new Button("Jouer a la dernère partie sauvegardée");
         getChildren().add(play);
+        lastgame.setLayoutX(135.254655);
+        lastgame.setLayoutY(391.0);
+        lastgame.setMnemonicParsing(false);
+        lastgame.setOnAction(event -> {
+            gc.playLastGameRecorded();
+        });
+        getChildren().add(lastgame);
     }
 }

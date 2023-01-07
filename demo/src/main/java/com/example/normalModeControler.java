@@ -16,7 +16,7 @@ public class normalModeControler {
 
     public void playSettings(boolean playWwords) {
         game g = new game(null);
-        gameControler gc = new gameControler(g, 120, 0, false, playWwords);
+        gameControler gc = new gameControler(g, 120, 0, false, playWwords,3);
         g.setControler(gc);
         Scene s = new Scene(g, 600, 450);
         App.changeScene(s);

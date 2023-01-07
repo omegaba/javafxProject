@@ -5,16 +5,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -25,8 +21,6 @@ import javafx.scene.text.FontWeight;
 public class gameControler {
     private boolean tetris;
     private game game;
-    private int wordCounter = 0;
-    private File saveData;
     private int first = 1;
     private int vie = 5;
     private double timer;
@@ -36,6 +30,8 @@ public class gameControler {
     private int caracterUtile;
     private int timerMinute;
     private int second;
+    private int nbwords;
+    private String lastgamesavingfile;
     private ArrayList<String> words = new ArrayList<>();
     private ArrayList<String> tampon = new ArrayList<>();
     private int countAll = 0;
@@ -43,16 +39,17 @@ public class gameControler {
     private StringBuilder sb = new StringBuilder();
     private ScheduledExecutorService executor = null;
 
-    public gameControler(game game, double time, double difficulte, boolean tetris, boolean playWw) {
+    
+    public gameControler(game game, double time, double difficulte, boolean tetris, boolean playWw, int nbwords) {
         this.game = game;
         this.tetris = tetris;
         this.difficulte = difficulte;
         playWwords = playWw;
-        if(playWwords==true){
+        this.nbwords = nbwords;
+        if (playWwords == true) {
 
-        }
-        else{
-            executor=Executors.newScheduledThreadPool(1);
+        } else {
+            executor = Executors.newScheduledThreadPool(1);
         }
         init();
         if (!tetris) {
@@ -120,20 +117,39 @@ public class gameControler {
         App.changeScene(s);
     }
 
-    public void creatSavingFile() {
-        Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH-mm-ss");
-        saveData = new File(formatter.format(date).strip() + ".txt");
 
+    /*
+     * dans cette fonction, on va regarder dans un certain fichier;
+     * si une game à été sauvegardé, elle est lancée;
+     * autrement le bouton n'apparait pas
+     */
+    public void playLastGameRecorded() {
+
+        ArrayList <String> datalist=new ArrayList<>();
+        File f = new File("lastGame.txt");
+        BufferedReader reader;
         try {
-            if (saveData.createNewFile()) {
-                System.out.println("File created: " + saveData.getName());
-            } else {
-                System.out.println("File already exists.");
+            reader = new BufferedReader(new FileReader(f));
+            String line = reader.readLine();
+            while (line != null) {
+                datalist.add(line);
+                // read next line
+                line = reader.readLine();
             }
+            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        game g = new game(null);
+        double t=Double.parseDouble(datalist.get(0));
+        double d=Double.parseDouble(datalist.get(1));
+        boolean tet=Boolean.valueOf(datalist.get(2));
+        boolean pww=Boolean.valueOf(datalist.get(3));
+        int nb=Integer.parseInt(datalist.get(4));
+        gameControler gc = new gameControler(g, t, d, tet, pww, nb);
+        g.setControler(gc);
+        Scene s = new Scene(g, 600, 450);
+        App.changeScene(s);
     }
 
     public void init() {
@@ -149,11 +165,35 @@ public class gameControler {
             game.vieValue.setText(Integer.toString(vie));
         }
 
+        game.lastgame.setVisible(false);
+
+        // Parametrage des données pour le fichier de sauvegarde de la dernière partie
+        // jouée
+
+        lastgamesavingfile = String.valueOf(this.timer) + "\n" + String.valueOf(difficulte) + "\n" + String.valueOf(tetris) + "\n"
+                + String.valueOf(playWwords) + "\n" + String.valueOf(nbwords);
+        try (FileWriter myObj = new FileWriter("lastGame.txt", false)) {
+            myObj.write(lastgamesavingfile);
+            myObj.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        if (playWwords) {
+            game.scd.setText("left");
+        } else {
+            game.scd.setText("seconds");
+        }
+
         // TODO Auto-generated method stub
         this.game.play.setVisible(true);
         this.game.play.setDisable(false);
-        String t = String.format("%.2f", timer);
-        this.game.nb1.setText(t);
+        if (!playWwords) {
+            String t = String.format("%.2f", timer);
+            this.game.nb1.setText(t);
+        } else {
+            this.game.nb1.setText(String.valueOf(nbwords));
+        }
         addToList();
         Collections.shuffle(words);
         // il faurdra changer pour avoir les 15 premiers mots pour la difficulté
@@ -166,7 +206,6 @@ public class gameControler {
         game.firstWordText.setText(tampon.get(0));
 
         game.firstWordText.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
-        wordCounter++;
     }
 
     public void printBlueWord() {
@@ -183,27 +222,18 @@ public class gameControler {
         }
     }
 
-    // sauvegarde les données dans un fichier
-    public void saveInFile() {
-        try {
-            FileWriter myWriter = new FileWriter(saveData);
-            myWriter.write(countAll + ";");
-            myWriter.write(counter + ";");
-            myWriter.write(String.valueOf(countAll - counter));
-            myWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     // affiche game Over dans le textfield
     public void printGameOver() {
         game.userWord.setText("Game over");
         game.userWord.setDisable(true);
-        saveInFile();
+
+        game.lastgame.setVisible(true);
+        // on sauvegarde la configuration du jeu dans un strin
         game.play.setVisible(true);
         game.play.setDisable(false);
-        executor.shutdown();
+        if (!playWwords)
+            executor.shutdown();
     }
 
     public void validation() {
@@ -235,6 +265,15 @@ public class gameControler {
             // caractères).
             else {
                 game.wordsPerMin.setText(String.valueOf((caracterUtile / timerMinute) / 5));
+            }
+
+            // dans le cas où on joue avec un nombre de mot comme délimiteur
+            if (playWwords) {
+                nbwords -= 1;
+                game.nb1.setText(String.valueOf(nbwords));
+                if (nbwords == 0) {
+                    printGameOver();
+                }
             }
             game.pw.setFill(Color.GREEN);
             printBlueWord();
@@ -271,37 +310,23 @@ public class gameControler {
 
         game.sp.setText(sb.toString());
         game.firstWordText.setText(tampon.get(0));
-        wordCounter++;
+
     }
 
     public void startGame(KeyEvent ke) {
 
-        if (first == 1) {
-            first = 0;
-            executor.scheduleAtFixedRate(r, 0, 1, TimeUnit.SECONDS);
-        }
-
-        /*while (ke.getCode().equals(KeyCode.SPACE)) {
-            String s = game.userWord.getText();
-            String real = tampon.remove(0);
-            int c = 0;
-            if (!(ke.getCode().equals(KeyCode.BACK_SPACE))) {
-                if (s.charAt(c) == real.charAt(c)) {
-                    game.pw.setFill(Color.GREEN);
-                    game.pw.setText(String.valueOf(s.charAt(c)));
-                    c++;
-                }else{
-                    game.pw.setFill(Color.GREEN);
-                    game.pw.setText(String.valueOf(s.charAt(c)));
-                    c++;
-                }
-            }else{
-
+        if (!playWwords) {
+            if (first == 1) {
+                first = 0;
+                executor.scheduleAtFixedRate(r, 0, 1, TimeUnit.SECONDS);
             }
-        }*/
-
-        if (ke.getCode().equals(KeyCode.SPACE)) {
-            validation();
+            if (ke.getCode().equals(KeyCode.SPACE)) {
+                validation();
+            }
+        } else {
+            if (ke.getCode().equals(KeyCode.SPACE)) {
+                validation();
+            }
         }
 
     }
@@ -323,7 +348,6 @@ public class gameControler {
                     if (timer <= 0) {
                         game.userWord.setDisable(true);
                         game.userWord.setText("Game over");
-                        saveInFile();
                     }
 
                     if (timer == -4) {
