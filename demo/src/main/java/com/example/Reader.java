@@ -2,7 +2,6 @@ package com.example;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 
 public class Reader extends Thread
@@ -41,8 +40,7 @@ public class Reader extends Thread
     public void run() {
         String str;
         try {
-            while ((str = con_br.readLine()) != null) {
-                ;
+            while ((str = con_br.readLine()) != null) {;
                 if (clientOrServer instanceof Client) {
                     System.out.println("\rserver: " + str);
                     System.out.print("> ");
@@ -54,7 +52,6 @@ public class Reader extends Thread
                 }
             }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

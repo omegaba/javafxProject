@@ -1,12 +1,10 @@
 package com.example;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,7 +15,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -193,20 +190,12 @@ public class gameControler {
     public void printRedWord() {
         if (tetris && isRed) {
             isRed = false;
-            // ajout mot dans tampon enemie
+            // envoie du message pour signaler qu'il faut ajouter un mot dans le tampon
+            // enemie
             if (clientOrHost instanceof Client) {
-                // System.out.println("c");
-                InputStream sysInBackup = System.in;
-                ByteArrayInputStream in = new ByteArrayInputStream("c\n".getBytes());
-                System.setIn(in);
-                System.setIn(sysInBackup);
+                ((Client) clientOrHost).sock_pw.println("rouge");
             } else {
-                // ((Server) clientOrHost).csock_pw.println("s");
-                InputStream sysInBackup = System.in;
-                ByteArrayInputStream in = new ByteArrayInputStream("s\n".getBytes());
-                System.setIn(in);
-                System.setIn(sysInBackup);
-                // System.out.println("s");
+                ((Server) clientOrHost).csock_pw.println("rouge");
             }
             game.firstWordText.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
             game.firstWordText.setFill(Color.BLACK);
@@ -383,7 +372,7 @@ public class gameControler {
 
                     timer -= 1;
                 }
-            } else {
+            } else if (!multi) {
                 if (timer > -1) {
                     if (vie == 0)
                         printGameOver();
