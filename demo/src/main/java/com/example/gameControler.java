@@ -41,6 +41,8 @@ public final class gameControler {
     private int countAll = 0;
     private int counter = 0;
     private StringBuilder sb = new StringBuilder();
+
+    //Cet attribut permet de faire des actions sur un runnable selon un interval de temps définit
     private ScheduledExecutorService executor = null;
 
     /**

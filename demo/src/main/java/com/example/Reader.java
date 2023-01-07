@@ -60,7 +60,7 @@ public class Reader extends Thread
 
     /*
      * Cette méthode s'occupe de forcer la avalidation
-     * ou d'ajouter d'un mot dans le tampon lorsqu'on est en mode multi-joueur
+     * ou d'ajouter un mot dans le tampon lorsqu'on est en mode multi-joueur
      */
     public void actionRedWord() {
         if (gameCtrl.getTampon().size() == 15) {
