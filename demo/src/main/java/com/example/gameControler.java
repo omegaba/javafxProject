@@ -42,7 +42,8 @@ public final class gameControler {
     private int counter = 0;
     private StringBuilder sb = new StringBuilder();
 
-    //Cet attribut permet de faire des actions sur un runnable selon un interval de temps définit
+    // Cet attribut permet de faire des actions sur un runnable selon un interval de
+    // temps définit
     private ScheduledExecutorService executor = null;
 
     /**
@@ -177,7 +178,12 @@ public final class gameControler {
         }
     }
 
-    // Si on est en mode tetris, ajoute ue vie lorsqu'un cmot en bleu est validé
+    /*
+     * Si on est en mode tetris, ajout d'une vie lorsqu'un mot en bleu est validé
+     * on utilise un random pour déterminer les chance de voir apparaître un mot
+     * bleu.
+     * Cette probabilité sera ficé à une chance sur 10
+     */
     public final void canAddLife() {
         if (tetris) {
             Random r = new Random();
@@ -190,6 +196,7 @@ public final class gameControler {
         }
     }
 
+    /* cette méthode ramènera le joueur au menu principal */
     public static final void toMainMenu() throws IOException {
         gameLaucherController glc = new gameLaucherController(null);
         gameLauncher g = new gameLauncher(null);
@@ -200,7 +207,7 @@ public final class gameControler {
     }
 
     /*
-     * dans cette fonction, on va regarder dans un certain fichier;
+     * Dans cette méthode, on va regarder dans un certain fichier;
      * si une game à été sauvegardé, elle est lancée;
      * autrement le bouton n'apparait pas
      */
@@ -236,6 +243,11 @@ public final class gameControler {
         App.changeScene(s);
     }
 
+    /*
+     * Cette méthode servira à initialiser le panel de jeu
+     * à cacher des objets quand le mode de jeu ne s'y prêtera pas
+     * mais aussi à initiliser le tampom
+     */
     public final void init() {
 
         if (tetris == false) {
@@ -251,8 +263,10 @@ public final class gameControler {
 
         game.getLastgame().setVisible(false);
 
-        // Parametrage des données pour le fichier de sauvegarde de la dernière partie
-        // jouée
+        /*
+         * Parametrage des données pour le fichier de sauvegarde de la dernière partie
+         * jouée
+         */
 
         lastgamesavingfile = String.valueOf(this.timer) + "\n" + String.valueOf(difficulte) + "\n"
                 + String.valueOf(tetris) + "\n"
@@ -265,20 +279,16 @@ public final class gameControler {
             e.printStackTrace();
         }
 
-
-
         if (playWwords) {
             game.getSecond().setText("Words left");
         } else {
             game.getSecond().setText("Seconds");
         }
 
-
         if (!multi) {
             this.game.getMenu().setVisible(true);
             this.game.getMenu().setDisable(false);
-        }
-        else{
+        } else {
             this.game.getMenu().setVisible(false);
             this.game.getMenu().setDisable(true);
         }
@@ -291,9 +301,9 @@ public final class gameControler {
         } else {
             this.game.getSecondvalue().setText(String.valueOf(nbwords));
         }
+
         addToList();
         Collections.shuffle(words);
-        // il faurdra changer pour avoir les 15 premiers mots pour la difficulté
         manageTampon();
         for (int i = 1; i < tampon.size(); i++) {
             sb.append(tampon.get(i) + " ");
@@ -305,6 +315,9 @@ public final class gameControler {
         game.getFirstWordText().setFont(Font.font("Verdana", FontWeight.BOLD, 16));
     }
 
+    /*
+     * Cette méthode s'occupe d'afficher les mots en rouge dans le mode multi-joueur
+     */
     public final void printRedWord() {
         if (tetris && isRed) {
             isRed = false;
@@ -320,6 +333,10 @@ public final class gameControler {
         }
     }
 
+    /*
+     * Cette méthode s'occupe de rajouter une vie au joueur si le mot en bleu est
+     * validé
+     */
     public final void printBlueWord() {
         if (tetris) {
             if (isBlue == true) {
@@ -348,6 +365,9 @@ public final class gameControler {
             executor.shutdown();
     }
 
+    /*
+     * Cette méthode s'occupe de la validation du mot écrit par l'utilisatieur
+     */
     public final void validation() {
         String s = game.getUserWord().getText();
         String real = tampon.remove(0);
@@ -378,7 +398,7 @@ public final class gameControler {
             }
             /*
              * autrement la vitesse est e nombre de caractères utiles, divisé par le temps
-             *  en minute, divisé encore
+             * en minute, divisé encore
              * par 5 (ici, on considère par convention qu’un mot fait en moyenne 5
              * caractères).
              */
@@ -398,10 +418,9 @@ public final class gameControler {
             game.getUserEntry().setFill(Color.GREEN);
             printBlueWord();
             printRedWord();
-        } 
-        
-        
-        /*si le mot tappé est faux */
+        }
+
+        /* si le mot tappé est faux */
         else {
             game.getUserEntry().setFill(Color.RED);
 
@@ -414,8 +433,10 @@ public final class gameControler {
             }
         }
 
-        // lorqu'on est en mode tetris, il y une chance de voir apparaître un mot en
-        // bleu, qui donnera une vie en plus
+        /*
+         * lorsqu'on est en mode tetris, il y une chance de voir apparaître un mot en
+         * bleu, qui donnera une vie en plus
+         */
         if (tetris) {
             canAddLife();
             if (multi)
@@ -428,8 +449,10 @@ public final class gameControler {
         game.getAccuracyvalue().setText(String.valueOf(Math.round((counter * 1.0 / countAll) * 100)));
         game.getUserEntry().setText(s);
 
-        // on reset le stringbuilder afin d'enlever le premier mot et d'en rajouter un
-        // autre à la fin
+        /*
+         * on reset le stringbuilder afin d'enlever le premier mot et d'en rajouter un
+         * autre à la fin
+         */
         sb.setLength(0);
         for (int i = 1; i < tampon.size(); i++) {
             sb.append(tampon.get(i) + " ");
@@ -443,8 +466,17 @@ public final class gameControler {
     public final void startGame(KeyEvent ke) {
 
         if (!playWwords) {
+            /*
+             * cette portion vérifie si le joueur vient de commencer une partie
+             * en particulier si first vaut 1
+             * ou bien si il est entrain de jouer, en particulier si first vaut 0
+             */
             if (first == 1) {
                 first = 0;
+
+                /*cette portion définit l'interval de temps auquel les actions du runable
+                *doivent être faites, dans notre cas, c'est tout les secondes
+                */
                 executor.scheduleAtFixedRate(r, 0, 1, TimeUnit.SECONDS);
             }
             if (ke.getCode().equals(KeyCode.SPACE)) {
@@ -458,7 +490,8 @@ public final class gameControler {
 
     }
 
-    /*le runnable nous permet d'implémenter le timer 
+    /*
+     * le runnable nous permet d'implémenter le timer
      * 
      */
     Runnable r = new Runnable() {
@@ -502,11 +535,17 @@ public final class gameControler {
                     if (timer <= -1) {
                         if (vie == 0)
                             printGameOver();
+                        /*
+                         * si le tampon est rempli, on force la validation du mot que le joueur écrivait
+                         */
                         if (tampon.size() == 15) {
                             validation();
                         } else {
-                            // quand le timer arive à 0 et que le tampon est pas complet, on rajoute un mot
-                            // au tampon et on affiche le mot rajouté
+                            /*
+                             * quand le timer arive à 0 et que le tampon n'est pas complet, on rajoute un
+                             * mot
+                             * au tampon et on affiche le mot rajouté
+                             */
                             addToTampon();
                             sb.setLength(0);
                             for (int i = 1; i < tampon.size(); i++) {

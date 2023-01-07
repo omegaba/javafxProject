@@ -1,6 +1,5 @@
 package com.example;
 
-import java.io.IOException;
 
 import javafx.scene.Scene;
 
@@ -10,6 +9,7 @@ public class hostJoinControler {
     public hostJoinControler(hostJoinPanel h) {
         this.laucher = h;
     }
+
 /*Cette méthode crée, si host vaut vrai, l'objet serveur 
  * autrement elle affiche le panel pour joindre une partie
  */
