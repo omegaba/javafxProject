@@ -21,7 +21,7 @@ public class hostJoinControler {
                 // g.setControler(gc);
                 // Scene s = new Scene(g, 600, 450);
                 // App.changeScene(s);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {

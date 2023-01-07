@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -48,18 +49,18 @@ public class gameControler {
     private StringBuilder sb = new StringBuilder();
     private ScheduledExecutorService executor = null;
 
-    public gameControler(game game, double time, double difficulte, boolean tetris, boolean playWw,boolean multi, Object clientOrHost) {
+    public gameControler(game game, double time, double difficulte, boolean tetris, boolean playWw, boolean multi,
+            Object clientOrHost) {
         this.game = game;
         this.tetris = tetris;
         this.difficulte = difficulte;
         playWwords = playWw;
         this.multi = multi;
         this.clientOrHost = clientOrHost;
-        if(playWwords==true){
+        if (playWwords == true) {
 
-        }
-        else{
-            executor=Executors.newScheduledThreadPool(1);
+        } else {
+            executor = Executors.newScheduledThreadPool(1);
         }
         init();
         if (!tetris) {
@@ -189,29 +190,26 @@ public class gameControler {
         wordCounter++;
     }
 
-
     public void printRedWord() {
-        if (tetris) {
-            if (isRed == true) {
-                isRed = false;
-                //ajout mot dans tampon enemie
-                if (clientOrHost instanceof Client) {
-                    // System.out.println("c");
-                    InputStream sysInBackup = System.in;
-                    ByteArrayInputStream in = new ByteArrayInputStream("c".getBytes());
-                    System.setIn(in);
-                    System.setIn(sysInBackup);
-                } else {
-                    // ((Server) clientOrHost).csock_pw.println("s");
-                    InputStream sysInBackup = System.in;
-                    ByteArrayInputStream in = new ByteArrayInputStream("s".getBytes());
-                    System.setIn(in);
-                    System.setIn(sysInBackup);
-                    // System.out.println("s");
-                }
-                game.firstWordText.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
-                game.firstWordText.setFill(Color.BLACK);
+        if (tetris && isRed) {
+            isRed = false;
+            // ajout mot dans tampon enemie
+            if (clientOrHost instanceof Client) {
+                // System.out.println("c");
+                InputStream sysInBackup = System.in;
+                ByteArrayInputStream in = new ByteArrayInputStream("c\n".getBytes());
+                System.setIn(in);
+                System.setIn(sysInBackup);
+            } else {
+                // ((Server) clientOrHost).csock_pw.println("s");
+                InputStream sysInBackup = System.in;
+                ByteArrayInputStream in = new ByteArrayInputStream("s\n".getBytes());
+                System.setIn(in);
+                System.setIn(sysInBackup);
+                // System.out.println("s");
             }
+            game.firstWordText.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
+            game.firstWordText.setFill(Color.BLACK);
         }
     }
 
@@ -301,7 +299,7 @@ public class gameControler {
         // bleu, qui donnera une vie en plus
         if (tetris) {
             canAddLife();
-            if(multi)
+            if (multi)
                 canRemoveLife();
             timer = Math.round((5 * Math.pow(0.9, difficulte)) * 100.0) / 100.0;
         }
@@ -330,24 +328,26 @@ public class gameControler {
             executor.scheduleAtFixedRate(r, 0, 1, TimeUnit.SECONDS);
         }
 
-        /*while (ke.getCode().equals(KeyCode.SPACE)) {
-            String s = game.userWord.getText();
-            String real = tampon.remove(0);
-            int c = 0;
-            if (!(ke.getCode().equals(KeyCode.BACK_SPACE))) {
-                if (s.charAt(c) == real.charAt(c)) {
-                    game.pw.setFill(Color.GREEN);
-                    game.pw.setText(String.valueOf(s.charAt(c)));
-                    c++;
-                }else{
-                    game.pw.setFill(Color.GREEN);
-                    game.pw.setText(String.valueOf(s.charAt(c)));
-                    c++;
-                }
-            }else{
-
-            }
-        }*/
+        /*
+         * while (ke.getCode().equals(KeyCode.SPACE)) {
+         * String s = game.userWord.getText();
+         * String real = tampon.remove(0);
+         * int c = 0;
+         * if (!(ke.getCode().equals(KeyCode.BACK_SPACE))) {
+         * if (s.charAt(c) == real.charAt(c)) {
+         * game.pw.setFill(Color.GREEN);
+         * game.pw.setText(String.valueOf(s.charAt(c)));
+         * c++;
+         * }else{
+         * game.pw.setFill(Color.GREEN);
+         * game.pw.setText(String.valueOf(s.charAt(c)));
+         * c++;
+         * }
+         * }else{
+         * 
+         * }
+         * }
+         */
 
         if (ke.getCode().equals(KeyCode.SPACE)) {
             validation();
@@ -415,5 +415,25 @@ public class gameControler {
             }
         }
     };
+
+    public List<String> getTampon() {
+        return tampon;
+    }
+
+    public double getDifficulty() {
+        return difficulte;
+    }
+
+    public StringBuilder getStringBuilder() {
+        return sb;
+    }
+
+    public void setTimer(double t) {
+        timer = t;
+    }
+
+    public game getGame() {
+        return game;
+    }
 
 }
