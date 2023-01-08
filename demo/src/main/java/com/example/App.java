@@ -30,18 +30,16 @@ public class App extends Application {
                 System.exit(0);
             }
         });
-        /*gameLauncher gl= new gameLauncher(null);
+        gameLauncher gl= new gameLauncher(null);
         gameLaucherController glc =new gameLaucherController(gl);
         gl.setControler(glc);
         scen = new Scene(gl, 600, 450);
-        stage.setScene(scen);*/
-        game g = new game(null);
-        gameControler gc = gameControler.builder().game(g).timer(120).difficulte(0).tetris(false).playWwords(false)
-                .nbwords(3).multi(false).clientOrHost(null).build();
+        stage.setScene(scen);
 
-        g.setControler(gc);
-        Scene s = new Scene(g, 600, 450);
-        App.changeScene(s);
+        // Tests.run("tetris");
+        // Tests.run("temps");
+        // Tests.run("nbWords");
+
         stage.show();
     }
 
